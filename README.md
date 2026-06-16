@@ -315,8 +315,6 @@ What are the speaker's conclusions?
 
 ### Nishant Rajora
 
-Data Science • AI Engineering • FastAPI • Machine Learning • RAG Systems
-
 ---
 
 ## ⭐ Support
