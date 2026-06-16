@@ -1,0 +1,274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>YT Video Assistant</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f172a, #1e293b);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .box {
+            width: 100%;
+            max-width: 750px;
+            background: rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.15);
+            border-radius: 20px;
+            padding: 30px;
+            color: white;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+        }
+
+        h2 {
+            text-align: center;
+            margin-bottom: 25px;
+            color: #38bdf8;
+            font-size: 28px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #cbd5e1;
+            margin-bottom: 25px;
+            font-size: 14px;
+        }
+
+        label {
+            display: block;
+            margin: 15px 0 8px;
+            font-weight: 600;
+            color: #e2e8f0;
+        }
+
+        input[type="text"] {
+            width: 100%;
+            padding: 14px;
+            border-radius: 12px;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            background: rgba(255, 255, 255, 0.08);
+            color: white;
+            font-size: 15px;
+            outline: none;
+            transition: 0.3s;
+        }
+
+        input[type="text"]:focus {
+            border-color: #38bdf8;
+            box-shadow: 0 0 10px rgba(56, 189, 248, 0.4);
+        }
+
+        input[type="text"]::placeholder {
+            color: #94a3b8;
+        }
+
+        .load-btn,
+        .ask-btn {
+            width: 100%;
+            border: none;
+            padding: 14px;
+            border-radius: 12px;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .load-btn {
+            margin-top: 15px;
+            background: linear-gradient(135deg, #2563eb, #3b82f6);
+            color: white;
+        }
+
+        .load-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(37, 99, 235, 0.4);
+        }
+
+        .ask-btn {
+            margin-top: 20px;
+            background: linear-gradient(135deg, #10b981, #22c55e);
+            color: white;
+        }
+
+        .ask-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+        }
+
+        .response-box {
+            margin-top: 25px;
+            padding: 20px;
+            background: rgba(255, 255, 255, 0.08);
+            border-left: 5px solid #38bdf8;
+            border-radius: 12px;
+            min-height: 120px;
+        }
+
+        .response-box strong {
+            color: #38bdf8;
+            font-size: 16px;
+        }
+
+        .response-box p {
+            margin-top: 10px;
+            line-height: 1.7;
+            color: #f8fafc;
+            white-space: pre-wrap;
+        }
+
+        @media(max-width: 600px) {
+            .box {
+                padding: 20px;
+            }
+
+            h2 {
+                font-size: 24px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <div class="box">
+        <h2>🎥 YouTube Transcript AI Assistant</h2>
+        <p class="subtitle">
+            Load a YouTube video transcript into FAISS and ask questions about its content.
+        </p>
+
+        <label for="videoLink">YouTube Video Link</label>
+        <input type="text" id="videoLink" placeholder="https://www.youtube.com/watch?v=...">
+
+        <button class="load-btn" onclick="loadVideo()">
+            📥 Load Video Data
+        </button>
+
+        <label for="targetQuestion">Your Question</label>
+        <input type="text" id="targetQuestion" placeholder="What is this video all about?">
+
+        <button class="ask-btn" onclick="askAssistant()">
+            🤖 Ask Assistant
+        </button>
+
+        <div class="response-box">
+            <strong>Assistant Status</strong>
+            <p id="output">System ready. Enter a YouTube URL and load the video...</p>
+        </div>
+    </div>
+
+    <script>
+        let loadedVideoLink = "";
+
+        async function loadVideo() {
+            const videoUrl = document.getElementById('videoLink').value;
+            const outputElement = document.getElementById('output');
+
+            if (!videoUrl) {
+                outputElement.innerText =
+                    "⚠️ Please enter a YouTube video link first.";
+                return;
+            }
+
+            outputElement.innerText =
+                "⏳ Loading transcript and building FAISS index...";
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/load-video', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videolink: videoUrl
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    loadedVideoLink = videoUrl;
+                    outputElement.innerText =
+                        result.message || "✅ Video loaded successfully into FAISS.";
+                } else {
+                    outputElement.innerText =
+                        "❌ Backend Error: " +
+                        (result.detail || "An unexpected error occurred.");
+                }
+
+            } catch (error) {
+                outputElement.innerText =
+                    "❌ Failed to connect to FastAPI backend.";
+                console.error(error);
+            }
+        }
+
+        async function askAssistant() {
+            const questionText =
+                document.getElementById('targetQuestion').value;
+
+            const outputElement = document.getElementById('output');
+
+            if (!loadedVideoLink) {
+                outputElement.innerText =
+                    "⚠️ Load a video before asking questions.";
+                return;
+            }
+
+            if (!questionText) {
+                outputElement.innerText =
+                    "⚠️ Please enter a question first.";
+                return;
+            }
+
+            outputElement.innerText =
+                "🔍 Searching transcript and generating answer...";
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/ask-assistant', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videolink: loadedVideoLink,
+                        target_question: questionText
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    outputElement.innerText = result.answer;
+                } else {
+                    outputElement.innerText =
+                        "❌ Backend Error: " +
+                        (result.detail || "An unexpected error occurred.");
+                }
+
+            } catch (error) {
+                outputElement.innerText =
+                    "❌ Failed to connect to FastAPI backend.";
+                console.error(error);
+            }
+        }
+    </script>
+
+</body>
+
+</html>

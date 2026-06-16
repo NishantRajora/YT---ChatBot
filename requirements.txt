@@ -1,0 +1,10 @@
+langchain
+langchain-core
+langchain-ollama
+langchain-community
+langchain-text-splitters
+youtube-transcript-api
+faiss-cpu
+fastapi
+uvicorn
+pydantic
