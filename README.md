@@ -1,269 +1,337 @@
-@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap');
+# 🎥 YouTube Transcript AI Assistant
 
-*{
-    margin:0;
-    padding:0;
-    box-sizing:border-box;
+<div align="center">
+
+### Ask Questions About Any YouTube Video Using AI
+
+**FastAPI • LangChain • Ollama • FAISS • RAG**
+
+Turn any YouTube video into an intelligent knowledge base and chat with its content.
+
+</div>
+
+---
+
+## 🚀 Overview
+
+YouTube videos contain valuable information, but finding specific insights often requires watching hours of content.
+
+This project solves that problem by combining:
+
+* YouTube Transcript Extraction
+* Retrieval-Augmented Generation (RAG)
+* FAISS Vector Search
+* Ollama Local LLMs
+* FastAPI Backend
+
+Users can load a YouTube video's transcript into a vector database and ask natural language questions about the video's content.
+
+The system retrieves relevant transcript segments and generates context-aware answers using a local LLM.
+
+---
+
+## ✨ Features
+
+### 📺 YouTube Transcript Processing
+
+* Automatic transcript extraction
+* Support for English transcripts
+* Transcript chunking for efficient retrieval
+
+### 🧠 AI-Powered Question Answering
+
+* Retrieval-Augmented Generation (RAG)
+* Context-aware responses
+* Grounded answers from transcript content
+* Hallucination reduction through retrieval
+
+### ⚡ Fast Semantic Search
+
+* FAISS Vector Database
+* Embedding-based similarity search
+* Relevant transcript retrieval
+
+### 🤖 Local AI Inference
+
+* Powered by Ollama
+* No OpenAI API required
+* Fully local execution
+
+### 🌐 Modern Web Interface
+
+* Clean responsive UI
+* Real-time interaction
+* FastAPI REST endpoints
+
+---
+
+## 🏗️ System Architecture
+
+```text
+YouTube Video
+      │
+      ▼
+Transcript Extraction
+      │
+      ▼
+Text Chunking
+      │
+      ▼
+Ollama Embeddings
+      │
+      ▼
+FAISS Vector Store
+      │
+      ▼
+Similarity Search
+      │
+      ▼
+Relevant Context
+      │
+      ▼
+ChatOllama (LLM)
+      │
+      ▼
+Generated Answer
+```
+
+---
+
+## ⚙️ Tech Stack
+
+### Backend
+
+* FastAPI
+* Python
+* Pydantic
+
+### AI & RAG
+
+* LangChain
+* Ollama
+* ChatOllama
+* Ollama Embeddings
+* FAISS
+
+### Data Processing
+
+* YouTube Transcript API
+* Recursive Character Text Splitter
+
+### Frontend
+
+* HTML
+* CSS
+* JavaScript
+
+---
+
+## 📂 Project Structure
+
+```text
+YT-Transcript-AI-Assistant/
+
+├── main.py
+├── requirements.txt
+├── index.html
+├── README.md
+└── assets/
+```
+
+---
+
+## 🔌 API Endpoints
+
+### Load Video Transcript
+
+```http
+POST /load-video
+```
+
+#### Request
+
+```json
+{
+  "videolink": "https://www.youtube.com/watch?v=VIDEO_ID"
 }
+```
 
-body{
-    font-family:'Inter',sans-serif;
-    min-height:100vh;
-    display:flex;
-    justify-content:center;
-    align-items:center;
-    overflow:hidden;
+#### Response
 
-    background:#020617;
-    position:relative;
+```json
+{
+  "message": "Video transcript loaded into FAISS.",
+  "video_id": "VIDEO_ID",
+  "cached": false,
+  "chunks": 32
 }
+```
 
-/* Animated Background */
+---
 
-body::before{
-    content:'';
-    position:absolute;
-    width:700px;
-    height:700px;
-    background:#2563eb;
-    border-radius:50%;
-    filter:blur(180px);
-    top:-200px;
-    left:-200px;
-    opacity:0.35;
-    animation:float1 8s ease-in-out infinite;
+### Ask Assistant
+
+```http
+POST /ask-assistant
+```
+
+#### Request
+
+```json
+{
+  "videolink": "https://www.youtube.com/watch?v=VIDEO_ID",
+  "target_question": "What is the video about?"
 }
+```
 
-body::after{
-    content:'';
-    position:absolute;
-    width:700px;
-    height:700px;
-    background:#06b6d4;
-    border-radius:50%;
-    filter:blur(180px);
-    bottom:-250px;
-    right:-250px;
-    opacity:0.25;
-    animation:float2 10s ease-in-out infinite;
+#### Response
+
+```json
+{
+  "answer": "Generated answer from transcript context"
 }
+```
 
-@keyframes float1{
-    50%{
-        transform:translateY(40px);
-    }
-}
+---
 
-@keyframes float2{
-    50%{
-        transform:translateY(-40px);
-    }
-}
+## 🛠 Installation
 
-/* Main Container */
+### Clone Repository
 
-.box{
-    position:relative;
-    z-index:5;
+```bash
+git clone https://github.com/your-username/yt-transcript-ai-assistant.git
 
-    width:100%;
-    max-width:850px;
+cd yt-transcript-ai-assistant
+```
 
-    padding:40px;
+### Install Dependencies
 
-    background:rgba(15,23,42,.65);
+```bash
+pip install -r requirements.txt
+```
 
-    backdrop-filter:blur(20px);
+---
 
-    border:1px solid rgba(255,255,255,.08);
+## 🤖 Install Ollama
 
-    border-radius:28px;
+Download:
 
-    box-shadow:
-        0 0 60px rgba(37,99,235,.15),
-        0 30px 80px rgba(0,0,0,.5);
-}
+```text
+https://ollama.com
+```
 
-/* Title */
+Pull the model:
 
-h2{
-    text-align:center;
-    font-size:42px;
-    font-weight:800;
+```bash
+ollama pull qwen2.5-coder:3b
+```
 
-    background:linear-gradient(
-        90deg,
-        #38bdf8,
-        #60a5fa,
-        #22d3ee
-    );
+Verify:
 
-    -webkit-background-clip:text;
-    -webkit-text-fill-color:transparent;
+```bash
+ollama list
+```
 
-    margin-bottom:15px;
-}
+---
 
-.subtitle{
-    text-align:center;
-    color:#94a3b8;
-    margin-bottom:30px;
-}
+## ▶️ Run the Backend
 
-/* Labels */
+```bash
+uvicorn main:app --reload
+```
 
-label{
-    display:block;
-    margin-top:20px;
-    margin-bottom:10px;
+Server starts at:
 
-    color:#e2e8f0;
-    font-weight:600;
-}
+```text
+http://127.0.0.1:8000
+```
 
-/* Inputs */
+---
 
-input{
-    width:100%;
+## 🌐 Run the Frontend
 
-    padding:16px;
+Open:
 
-    border-radius:16px;
+```text
+index.html
+```
 
-    background:#0f172a;
+Or use:
 
-    border:1px solid rgba(255,255,255,.08);
+* VS Code Live Server
+* Python HTTP Server
 
-    color:white;
+```bash
+python -m http.server 5500
+```
 
-    outline:none;
+---
 
-    transition:.3s;
-}
+## 💡 Example Questions
 
-input:focus{
-    border-color:#38bdf8;
+```text
+Summarize this video.
 
-    box-shadow:
-        0 0 20px rgba(56,189,248,.3);
-}
+What are the key points discussed?
 
-/* Buttons */
+Explain the main concept.
 
-.load-btn,
-.ask-btn{
+What technologies were mentioned?
 
-    width:100%;
+Give me a short overview.
 
-    margin-top:18px;
+What are the speaker's conclusions?
+```
 
-    border:none;
+---
 
-    padding:16px;
+## 🎯 Use Cases
 
-    border-radius:16px;
+* Educational video summarization
+* Technical tutorial analysis
+* Lecture understanding
+* Research assistance
+* Knowledge extraction
+* Content review
+* Personal learning assistant
 
-    font-size:16px;
+---
 
-    font-weight:700;
+## 🔮 Future Improvements
 
-    cursor:pointer;
+* Multi-video knowledge base
+* Playlist ingestion
+* Persistent vector storage
+* Chat memory
+* Streaming responses
+* PDF summary export
+* User authentication
+* Docker deployment
+* Multi-language support
 
-    transition:.3s;
-}
+---
 
-.load-btn{
+## 👨‍💻 Author
 
-    background:linear-gradient(
-        135deg,
-        #2563eb,
-        #3b82f6
-    );
+### Nishant Rajora
 
-    color:white;
-}
+Data Science • AI Engineering • FastAPI • Machine Learning • RAG Systems
 
-.ask-btn{
+---
 
-    background:linear-gradient(
-        135deg,
-        #10b981,
-        #22c55e
-    );
+## ⭐ Support
 
-    color:white;
-}
+If you found this project useful:
 
-.load-btn:hover,
-.ask-btn:hover{
+* Star the repository
+* Fork the project
+* Share feedback
+* Contribute improvements
 
-    transform:translateY(-4px);
+---
 
-    box-shadow:
-        0 10px 30px rgba(37,99,235,.4);
-}
+<div align="center">
 
-/* Response */
+Built with ❤️ using FastAPI, LangChain, Ollama and FAISS
 
-.response-box{
-
-    margin-top:30px;
-
-    background:#0f172a;
-
-    border-radius:20px;
-
-    padding:25px;
-
-    border:1px solid rgba(255,255,255,.06);
-
-    min-height:180px;
-
-    position:relative;
-}
-
-.response-box::before{
-
-    content:'AI RESPONSE';
-
-    position:absolute;
-
-    top:-12px;
-    left:20px;
-
-    background:#020617;
-
-    color:#38bdf8;
-
-    padding:0 10px;
-
-    font-size:12px;
-
-    letter-spacing:2px;
-}
-
-.response-box strong{
-    color:#38bdf8;
-}
-
-.response-box p{
-
-    margin-top:15px;
-
-    color:#e2e8f0;
-
-    line-height:1.8;
-}
-
-/* Mobile */
-
-@media(max-width:768px){
-
-    .box{
-        padding:25px;
-    }
-
-    h2{
-        font-size:32px;
-    }
-}
+</div>
