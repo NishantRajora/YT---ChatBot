@@ -15,38 +15,74 @@
 
         body {
             font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #0f172a, #1e293b);
+            background:
+                radial-gradient(circle at top left, rgba(56, 189, 248, 0.2), transparent 30%),
+                radial-gradient(circle at bottom right, rgba(16, 185, 129, 0.18), transparent 28%),
+                linear-gradient(135deg, #020617, #0f172a 50%, #111827);
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
             padding: 20px;
+            color: white;
         }
 
         .box {
             width: 100%;
-            max-width: 750px;
-            background: rgba(255, 255, 255, 0.08);
+            max-width: 960px;
+            background: rgba(15, 23, 42, 0.76);
             backdrop-filter: blur(15px);
-            border: 1px solid rgba(255, 255, 255, 0.15);
-            border-radius: 20px;
-            padding: 30px;
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-radius: 24px;
+            padding: 28px;
             color: white;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+            box-shadow: 0 24px 80px rgba(0, 0, 0, 0.45);
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            gap: 16px;
+            margin-bottom: 22px;
+            flex-wrap: wrap;
         }
 
         h2 {
-            text-align: center;
-            margin-bottom: 25px;
-            color: #38bdf8;
-            font-size: 28px;
+            color: #e2e8f0;
+            font-size: 30px;
+            letter-spacing: -0.03em;
         }
 
         .subtitle {
-            text-align: center;
             color: #cbd5e1;
-            margin-bottom: 25px;
+            margin-top: 8px;
             font-size: 14px;
+            max-width: 640px;
+        }
+
+        .status-pill {
+            align-self: flex-start;
+            padding: 10px 14px;
+            border-radius: 999px;
+            background: rgba(56, 189, 248, 0.12);
+            border: 1px solid rgba(56, 189, 248, 0.24);
+            color: #bae6fd;
+            font-size: 13px;
+            white-space: nowrap;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: 1.1fr 0.9fr;
+            gap: 20px;
+        }
+
+        .panel {
+            background: rgba(15, 23, 42, 0.55);
+            border: 1px solid rgba(148, 163, 184, 0.14);
+            border-radius: 20px;
+            padding: 18px;
         }
 
         label {
@@ -59,9 +95,9 @@
         input[type="text"] {
             width: 100%;
             padding: 14px;
-            border-radius: 12px;
-            border: 1px solid rgba(255, 255, 255, 0.2);
-            background: rgba(255, 255, 255, 0.08);
+            border-radius: 14px;
+            border: 1px solid rgba(255, 255, 255, 0.16);
+            background: rgba(255, 255, 255, 0.07);
             color: white;
             font-size: 15px;
             outline: none;
@@ -78,11 +114,12 @@
         }
 
         .load-btn,
-        .ask-btn {
+        .ask-btn,
+        .clear-btn {
             width: 100%;
             border: none;
             padding: 14px;
-            border-radius: 12px;
+            border-radius: 14px;
             font-size: 16px;
             font-weight: bold;
             cursor: pointer;
@@ -109,6 +146,78 @@
         .ask-btn:hover {
             transform: translateY(-2px);
             box-shadow: 0 6px 18px rgba(16, 185, 129, 0.4);
+        }
+
+        .clear-btn {
+            margin-top: 12px;
+            background: rgba(148, 163, 184, 0.16);
+            color: #e2e8f0;
+            border: 1px solid rgba(148, 163, 184, 0.28);
+        }
+
+        .clear-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 18px rgba(148, 163, 184, 0.18);
+        }
+
+        .chat-shell {
+            display: flex;
+            flex-direction: column;
+            height: 620px;
+        }
+
+        .chat-log {
+            flex: 1;
+            overflow-y: auto;
+            padding: 6px;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .chat-empty {
+            color: #94a3b8;
+            text-align: center;
+            padding: 40px 16px;
+            border: 1px dashed rgba(148, 163, 184, 0.24);
+            border-radius: 16px;
+            margin-top: 10px;
+        }
+
+        .message {
+            max-width: 88%;
+            padding: 14px 16px;
+            border-radius: 18px;
+            line-height: 1.6;
+            white-space: pre-wrap;
+            word-break: break-word;
+        }
+
+        .message.user {
+            align-self: flex-end;
+            background: linear-gradient(135deg, #1d4ed8, #2563eb);
+            border-bottom-right-radius: 6px;
+        }
+
+        .message.assistant {
+            align-self: flex-start;
+            background: rgba(255, 255, 255, 0.08);
+            border: 1px solid rgba(148, 163, 184, 0.18);
+            border-bottom-left-radius: 6px;
+        }
+
+        .message-meta {
+            font-size: 12px;
+            color: #cbd5e1;
+            margin-bottom: 6px;
+            text-transform: uppercase;
+            letter-spacing: 0.06em;
+        }
+
+        .composer {
+            margin-top: 14px;
+            display: grid;
+            gap: 12px;
         }
 
         .response-box {
@@ -140,6 +249,15 @@
             h2 {
                 font-size: 24px;
             }
+
+            .grid {
+                grid-template-columns: 1fr;
+            }
+
+            .chat-shell {
+                height: auto;
+                min-height: 480px;
+            }
         }
     </style>
 </head>
@@ -147,33 +265,117 @@
 <body>
 
     <div class="box">
-        <h2>🎥 YouTube Transcript AI Assistant</h2>
-        <p class="subtitle">
-            Load a YouTube video transcript into FAISS and ask questions about its content.
-        </p>
+        <div class="header">
+            <div>
+                <h2>Chat with any YouTube video</h2>
+                <p class="subtitle">
+                    A conversational RAG assistant that remembers prior turns per video session and answers from
+                    transcript evidence.
+                </p>
+            </div>
+            <div class="status-pill" id="sessionStatus">Session not loaded</div>
+        </div>
 
-        <label for="videoLink">YouTube Video Link</label>
-        <input type="text" id="videoLink" placeholder="https://www.youtube.com/watch?v=...">
+        <div class="grid">
+            <section class="panel">
+                <label for="videoLink">YouTube Video Link</label>
+                <input type="text" id="videoLink" placeholder="https://www.youtube.com/watch?v=...">
 
-        <button class="load-btn" onclick="loadVideo()">
-            📥 Load Video Data
-        </button>
+                <button class="load-btn" onclick="loadVideo()">
+                    📥 Load Video Session
+                </button>
 
-        <label for="targetQuestion">Your Question</label>
-        <input type="text" id="targetQuestion" placeholder="What is this video all about?">
+                <label for="targetQuestion">Your Message</label>
+                <input type="text" id="targetQuestion" placeholder="Ask a question or follow up...">
 
-        <button class="ask-btn" onclick="askAssistant()">
-            🤖 Ask Assistant
-        </button>
+                <div class="composer">
+                    <button class="ask-btn" onclick="askAssistant()">
+                        💬 Send Message
+                    </button>
+                    <button class="clear-btn" onclick="clearChat()">
+                        🧹 Clear Chat
+                    </button>
+                </div>
 
-        <div class="response-box">
-            <strong>Assistant Status</strong>
-            <p id="output">System ready. Enter a YouTube URL and load the video...</p>
+                <div class="response-box">
+                    <strong>Assistant Status</strong>
+                    <p id="output">System ready. Load a YouTube URL to start a video session.</p>
+                </div>
+            </section>
+
+            <section class="panel chat-shell">
+                <strong style="color:#bae6fd; font-size:16px;">Conversation</strong>
+                <div id="chatLog" class="chat-log">
+                    <div class="chat-empty" id="chatEmpty">
+                        No messages yet. Load a video, then start chatting.
+                    </div>
+                </div>
+            </section>
         </div>
     </div>
 
     <script>
         let loadedVideoLink = "";
+        let currentSessionId = "";
+        let currentMessages = [];
+
+        function createSessionId() {
+            if (window.crypto && crypto.randomUUID) {
+                return crypto.randomUUID();
+            }
+
+            return "session-" + Date.now().toString(36) + "-" + Math.random().toString(36).slice(2, 10);
+        }
+
+        function getVideoId(videoUrl) {
+            try {
+                const parsedUrl = new URL(videoUrl);
+                return parsedUrl.searchParams.get("v") || videoUrl;
+            } catch (error) {
+                return videoUrl;
+            }
+        }
+
+        function getSessionStorageKey(videoUrl) {
+            return "yt_chat_session:" + getVideoId(videoUrl);
+        }
+
+        function setStatus(text) {
+            document.getElementById('sessionStatus').innerText = text;
+        }
+
+        function renderChat(messages) {
+            const chatLog = document.getElementById('chatLog');
+            chatLog.innerHTML = "";
+
+            if (!messages || messages.length === 0) {
+                chatLog.innerHTML = '<div class="chat-empty" id="chatEmpty">No messages yet. Load a video, then start chatting.</div>';
+                return;
+            }
+
+            messages.forEach((message) => {
+                const bubble = document.createElement('div');
+                bubble.className = `message ${message.role}`;
+
+                const meta = document.createElement('div');
+                meta.className = 'message-meta';
+                meta.innerText = message.role === 'user' ? 'You' : 'Assistant';
+
+                const content = document.createElement('div');
+                content.innerText = message.content;
+
+                bubble.appendChild(meta);
+                bubble.appendChild(content);
+                chatLog.appendChild(bubble);
+            });
+
+            chatLog.scrollTop = chatLog.scrollHeight;
+        }
+
+        function addLocalMessage(role, messageContent) {
+            currentMessages.push({ role: role, content: messageContent });
+            renderChat(currentMessages);
+        }
 
         async function loadVideo() {
             const videoUrl = document.getElementById('videoLink').value;
@@ -185,8 +387,13 @@
                 return;
             }
 
+            if (!currentSessionId) {
+                currentSessionId = createSessionId();
+            }
+
             outputElement.innerText =
-                "⏳ Loading transcript and building FAISS index...";
+                "⏳ Loading transcript and preparing the chat session...";
+            setStatus("Loading session...");
 
             try {
                 const response = await fetch('http://127.0.0.1:8000/load-video', {
@@ -195,7 +402,8 @@
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
-                        videolink: videoUrl
+                        videolink: videoUrl,
+                        session_id: currentSessionId
                     })
                 });
 
@@ -203,17 +411,25 @@
 
                 if (response.ok) {
                     loadedVideoLink = videoUrl;
+                    currentSessionId = result.session_id || currentSessionId;
+                    currentMessages = result.messages || [];
+                    localStorage.setItem(getSessionStorageKey(videoUrl), currentSessionId);
+                    localStorage.setItem('yt_chat_last_video', videoUrl);
+                    renderChat(currentMessages);
                     outputElement.innerText =
-                        result.message || "✅ Video loaded successfully into FAISS.";
+                        result.message || "✅ Video loaded successfully and chat session is ready.";
+                    setStatus(`Session ready: ${currentSessionId.slice(0, 8)}`);
                 } else {
                     outputElement.innerText =
                         "❌ Backend Error: " +
                         (result.detail || "An unexpected error occurred.");
+                    setStatus("Session unavailable");
                 }
 
             } catch (error) {
                 outputElement.innerText =
                     "❌ Failed to connect to FastAPI backend.";
+                setStatus("Backend unavailable");
                 console.error(error);
             }
         }
@@ -237,17 +453,21 @@
             }
 
             outputElement.innerText =
-                "🔍 Searching transcript and generating answer...";
+                "🔍 Searching transcript, reading conversation history, and generating answer...";
+
+            addLocalMessage('user', questionText);
+            document.getElementById('targetQuestion').value = '';
 
             try {
-                const response = await fetch('http://127.0.0.1:8000/ask-assistant', {
+                const response = await fetch('http://127.0.0.1:8000/chat', {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json'
                     },
                     body: JSON.stringify({
                         videolink: loadedVideoLink,
-                        target_question: questionText
+                        message: questionText,
+                        session_id: currentSessionId
                     })
                 });
 
@@ -255,6 +475,12 @@
 
                 if (response.ok) {
                     outputElement.innerText = result.answer;
+                    if (result.session_id) {
+                        currentSessionId = result.session_id;
+                        localStorage.setItem(getSessionStorageKey(loadedVideoLink), currentSessionId);
+                    }
+                    currentMessages = result.messages || currentMessages;
+                    renderChat(currentMessages);
                 } else {
                     outputElement.innerText =
                         "❌ Backend Error: " +
@@ -267,6 +493,61 @@
                 console.error(error);
             }
         }
+
+        async function clearChat() {
+            const outputElement = document.getElementById('output');
+
+            if (!loadedVideoLink || !currentSessionId) {
+                outputElement.innerText = "⚠️ Load a video session before clearing chat.";
+                return;
+            }
+
+            try {
+                const response = await fetch('http://127.0.0.1:8000/clear-chat', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        videolink: loadedVideoLink,
+                        session_id: currentSessionId,
+                        message: ""
+                    })
+                });
+
+                const result = await response.json();
+
+                if (response.ok) {
+                    currentMessages = [];
+                    renderChat([]);
+                    outputElement.innerText = result.message || "Chat history cleared.";
+                } else {
+                    outputElement.innerText = "❌ Backend Error: " + (result.detail || "Unable to clear chat.");
+                }
+            } catch (error) {
+                outputElement.innerText = "❌ Failed to connect to FastAPI backend.";
+                console.error(error);
+            }
+        }
+
+        (function restoreSession() {
+            const savedVideo = localStorage.getItem('yt_chat_last_video');
+            const savedSession = savedVideo ? localStorage.getItem(getSessionStorageKey(savedVideo)) : '';
+            const outputElement = document.getElementById('output');
+
+            if (savedVideo) {
+                loadedVideoLink = savedVideo;
+                document.getElementById('videoLink').value = savedVideo;
+                if (savedSession) {
+                    currentSessionId = savedSession;
+                    setStatus(`Session ready: ${currentSessionId.slice(0, 8)}`);
+                }
+            }
+
+            if (savedVideo && savedSession) {
+                outputElement.innerText = 'Session restored. Load the video again or continue chatting.';
+            }
+        })();
     </script>
 
 </body>
